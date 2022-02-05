@@ -57,7 +57,13 @@ function checkMult(array){
         let num1 = array[operatorIndex - 1];
         let num2 = array[operatorIndex + 1];
         let solution = operate(num1, operator, num2);
-        display.textContent = solution;
+        let begin = array.slice(0,(operatorIndex - 1));
+        let end = array.slice((operatorIndex + 2));
+        array = begin.concat(solution, end);
+        console.log("begin" + begin);
+        console.log("end" + end);
+        console.log(array);
+        //display.textContent = solution;
     };
 };
 function checkDiv(array){
