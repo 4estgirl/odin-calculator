@@ -20,6 +20,7 @@ function divide (num1, num2){
     return solution;
 };
 
+//evaluate function
 function operate (num1, operator, num2){
     if (operator == "+"){
         return add(num1, num2);
@@ -37,13 +38,71 @@ function operate (num1, operator, num2){
     return solution;
 };
 
+//PMDAS (no exponent) functions
+function checkParens(array){
+    if (array.find("(") == "("){
+        let openIndex = array.findIndex("(");
+        let closeIndex = array.findIndex(")");
+        let parensArray = array.slice(openIndex + 1, closeIndex);
+        checkMult(parensArray);
+        checkDiv(multArray);
+        checkAdd(divArray);
+        checkSub(addArray);
+    };
+};
+function checkMult(array){
+    if (array.includes("x") == true){
+        let operatorIndex = array.findIndex((element) => element == "x");
+        let operator = "*";
+        let num1 = array[operatorIndex - 1];
+        let num2 = array[operatorIndex + 1];
+        let solution = operate(num1, operator, num2);
+        display.textContent = solution;
+    };
+};
+function checkDiv(array){
+    if (array.includes("/") == true){
+        let operatorIndex = array.findIndex((element) => element == "/");
+        let operator = "/";
+        let num1 = array[operatorIndex - 1];
+        let num2 = array[operatorIndex + 1];
+        let solution = operate(num1, operator, num2);
+        display.textContent = solution;
+    };
+};
+function checkAdd(array){
+    if (array.includes("+") == true){
+        let operatorIndex = array.findIndex((element) => element == "+");
+        let operator = "+";
+        let num1 = parseInt(array[operatorIndex - 1]);
+        let num2 = parseInt(array[operatorIndex + 1]);
+        let solution = operate(num1, operator, num2);
+        display.textContent = solution;
+    };
+};
+function checkSub(array){
+    if (array.includes("-") == true){
+        let operatorIndex = array.findIndex((element) => element == "-");
+        let operator = "-";
+        let num1 = array[operatorIndex - 1];
+        let num2 = array[operatorIndex + 1];
+        let solution = operate(num1, operator, num2);
+        display.textContent = solution;
+    };
+};
 
 //event listeners that update both display and display value array
 let numbers = document.querySelectorAll(".numberButton");
 numbers.forEach(button => {
     button.addEventListener("click", () => {
         display.textContent += button.textContent;
-        displayArray.push(button.textContent);
+        if(Object.keys(numbers).some(element => displayArray.slice(-1).includes(element) == true)){
+            let last = displayArray.slice(-1).toString() + button.textContent;
+            displayArray.pop();
+            displayArray.push(last);
+        } else {
+            displayArray.push(button.textContent);
+        }
         console.log(displayArray);
     });
 });
