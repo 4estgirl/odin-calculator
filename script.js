@@ -52,18 +52,21 @@ function checkParens(array){
 };
 function checkMult(array){
     if (array.includes("x") == true){
-        let operatorIndex = array.findIndex((element) => element == "x");
-        let operator = "*";
-        let num1 = array[operatorIndex - 1];
-        let num2 = array[operatorIndex + 1];
-        let solution = operate(num1, operator, num2);
-        let begin = array.slice(0,(operatorIndex - 1));
-        let end = array.slice((operatorIndex + 2));
-        array = begin.concat(solution, end);
-        console.log("begin" + begin);
-        console.log("end" + end);
-        console.log(array);
-        //display.textContent = solution;
+        let filterX = array.filter((element) => element == "x");
+        let runtimes = filterX.length;
+        for (i=0; i < runtimes; i++){
+            let operatorIndex = array.findIndex((element) => element == "x");
+            let operator = "*";
+            let num1 = array[operatorIndex - 1];
+            let num2 = array[operatorIndex + 1];
+            let solution = operate(num1, operator, num2);
+            let begin = array.slice(0,(operatorIndex - 1));
+            let end = array.slice((operatorIndex + 2));
+            array = begin.concat(solution, end);
+            console.log("begin" + begin);
+            console.log("end" + end);
+            console.log(array);
+        };
     };
 };
 function checkDiv(array){
@@ -101,6 +104,7 @@ function checkSub(array){
 let numbers = document.querySelectorAll(".numberButton");
 numbers.forEach(button => {
     button.addEventListener("click", () => {
+//ERROR -- only does single or double digits
         display.textContent += button.textContent;
         if(Object.keys(numbers).some(element => displayArray.slice(-1).includes(element) == true)){
             let last = displayArray.slice(-1).toString() + button.textContent;
@@ -120,6 +124,7 @@ clear.addEventListener("click", () => {
 });
 let backspace = document.querySelector("#back");
 backspace.addEventListener("click", () => {
+//ERROR -- when a number in the array is something like "66", all of "66" is deleted, not just "6"
     display.textContent = display.textContent.slice(0,-1);
     displayArray.pop();
     console.log(displayArray);
