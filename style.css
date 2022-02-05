@@ -25,7 +25,7 @@ h1 {
     margin-top: 10px;
 }
 
-.button {
+.button, .numberButton, .operatorButton {
     padding: 15px 10px;
     background-color: #D45113;
     border-radius: 20px;

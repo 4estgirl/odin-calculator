@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculator</title>
     <link rel="stylesheet" href="style.css">
+    <script type="text/javascript" src="script.js" defer></script>
 </head>
 <body>
     <div id = "header">
@@ -14,29 +15,29 @@
     </div>
     <div id = "calc">
         <div class = "display">
-            <p class = "display">ENTER HERE</p>
+            <p class = "display" id = "displayValue"></p>
         </div>
         <div id = "buttons">
             <button class = "button" id = "clear">AC</button>
-            <button class = "button" id = "()">()</button>
-            <button class = "button" id = "%">%</button>
-            <button class = "button" id = "/">/</button>
-            <button class = "button" id = "7">7</button>
-            <button class = "button" id = "8">8</button>
-            <button class = "button" id = "9">9</button>
-            <button class = "button" id = "x">x</button>
-            <button class = "button" id = "4">4</button>
-            <button class = "button" id = "5">5</button>
-            <button class = "button" id = "6">6</button>
-            <button class = "button" id = "-">-</button>
-            <button class = "button" id = "1">1</button>
-            <button class = "button" id = "2">2</button>
-            <button class = "button" id = "3">3</button>
-            <button class = "button" id = "+">+</button>
-            <button class = "button" id = "0">0</button>
+            <button class = "button" id = "parens">()</button>
+            <button class = "button" id = "percent">%</button>
+            <button class = "operatorButton" id = "/">/</button>
+            <button class = "numberButton" id = "7">7</button>
+            <button class = "numberButton" id = "8">8</button>
+            <button class = "numberButton" id = "9">9</button>
+            <button class = "operatorButton" id = "x">x</button>
+            <button class = "numberButton" id = "4">4</button>
+            <button class = "numberButton" id = "5">5</button>
+            <button class = "numberButton" id = "6">6</button>
+            <button class = "operatorButton" id = "-">-</button>
+            <button class = "numberButton" id = "1">1</button>
+            <button class = "numberButton" id = "2">2</button>
+            <button class = "numberButton" id = "3">3</button>
+            <button class = "operatorButton" id = "+">+</button>
+            <button class = "numberButton" id = "0">0</button>
             <button class = "button" id = "dot">.</button>
             <button class = "button" id = "back">Del</button>
-            <button class = "button" id = "=">=</button>
+            <button class = "button" id = "equals">=</button>
         </div>
     </div>
 </body>
