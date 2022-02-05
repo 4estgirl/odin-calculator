@@ -59,15 +59,33 @@ operators.forEach(button => {
 });
 let parens = document.querySelector("#parens");
 parens.addEventListener("click", () =>{
-        ////need a toggle function "(" then ")"
+    let open = display.textContent.lastIndexOf("(");
+    let close = display.textContent.lastIndexOf(")");
+    if (((open == -1) && (close = -1)) || (open < close)){
+        display.textContent += "(";
+    } else {
+        display.textContent += ")";
+    };
 });
 let percent = document.querySelector("#percent");
 percent.addEventListener("click", () => {
-            ////need logic to move decimal 2 to the left
+    if(display.textContent.length == 0){
+        display.textContent = display.textContent;
+    } else if (display.textContent.length == 1){
+        display.textContent = "0.0" + display.textContent;
+    } else if (display.textContent.length == 2){
+        display.textContent = "0." + display.textContent;
+    } else {
+        let first = display.textContent.slice(0, -2);
+        let last = display.textContent.slice(-2);
+        display.textContent = first + "." + last;
+    };
 });
 let dot = document.querySelector("#dot");
 dot.addEventListener("click", () => {
-            ////need logic to only add ONE "."
+    if (!display.textContent.includes(".")){
+        display.textContent += dot.textContent;
+    };
 });
 let equals = document.querySelector("#equals");
 equals.addEventListener("click", () => {
