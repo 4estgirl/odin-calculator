@@ -40,14 +40,20 @@ function operate (num1, operator, num2){
 
 //PMDAS (no exponent) functions
 function checkParens(array){
-    if (array.find("(") == "("){
-        let openIndex = array.findIndex("(");
-        let closeIndex = array.findIndex(")");
-        let parensArray = array.slice(openIndex + 1, closeIndex);
-        checkMult(parensArray);
-        checkDiv(multArray);
-        checkAdd(divArray);
-        checkSub(addArray);
+    if (array.includes("(") == true){
+        let filterX = array.filter((element) => element == "(");
+        let runtimes = filterX.length;
+        for (i=0; i < runtimes; i++){
+            let openIndex = array.findIndex((element) => element == "(");
+            let closeIndex = array.lastIndexOf(")");
+            let parensArray = array.slice(openIndex + 1, closeIndex);
+            checkMult(parensArray);
+            checkDiv(parensArray);
+            checkAdd(parensArray);
+            checkSub(parensArray);
+            console.log(parensArray);
+            return parensArray;
+        };
     };
 };
 function checkMult(array){
@@ -63,40 +69,59 @@ function checkMult(array){
             let begin = array.slice(0,(operatorIndex - 1));
             let end = array.slice((operatorIndex + 2));
             array = begin.concat(solution, end);
-            console.log("begin" + begin);
-            console.log("end" + end);
-            console.log(array);
+            return(array);
         };
     };
 };
 function checkDiv(array){
     if (array.includes("/") == true){
-        let operatorIndex = array.findIndex((element) => element == "/");
-        let operator = "/";
-        let num1 = array[operatorIndex - 1];
-        let num2 = array[operatorIndex + 1];
-        let solution = operate(num1, operator, num2);
-        display.textContent = solution;
+        let filterX = array.filter((element) => element == "/");
+        let runtimes = filterX.length;
+        for (i=0; i < runtimes; i++){
+            let operatorIndex = array.findIndex((element) => element == "/");
+            let operator = "/";
+            let num1 = array[operatorIndex - 1];
+            let num2 = array[operatorIndex + 1];
+            let solution = operate(num1, operator, num2);
+            let begin = array.slice(0,(operatorIndex - 1));
+            let end = array.slice((operatorIndex + 2));
+            array = begin.concat(solution, end);
+            return array;
+        };
     };
 };
 function checkAdd(array){
     if (array.includes("+") == true){
-        let operatorIndex = array.findIndex((element) => element == "+");
-        let operator = "+";
-        let num1 = parseInt(array[operatorIndex - 1]);
-        let num2 = parseInt(array[operatorIndex + 1]);
-        let solution = operate(num1, operator, num2);
-        display.textContent = solution;
+        let filterX = array.filter((element) => element == "+");
+        let runtimes = filterX.length;
+        for (i=0; i < runtimes; i++){
+            let operatorIndex = array.findIndex((element) => element == "+");
+            let operator = "+";
+            let num1 = parseInt(array[operatorIndex - 1]);
+            let num2 = parseInt(array[operatorIndex + 1]);
+            let solution = operate(num1, operator, num2);
+            let begin = array.slice(0,(operatorIndex - 1));
+            let end = array.slice((operatorIndex + 2));
+            array = begin.concat(solution, end);
+            return array;
+        };
     };
 };
 function checkSub(array){
     if (array.includes("-") == true){
-        let operatorIndex = array.findIndex((element) => element == "-");
-        let operator = "-";
-        let num1 = array[operatorIndex - 1];
-        let num2 = array[operatorIndex + 1];
-        let solution = operate(num1, operator, num2);
-        display.textContent = solution;
+        let filterX = array.filter((element) => element == "-");
+        let runtimes = filterX.length;
+        for (i=0; i < runtimes; i++){
+            let operatorIndex = array.findIndex((element) => element == "-");
+            let operator = "-";
+            let num1 = array[operatorIndex - 1];
+            let num2 = array[operatorIndex + 1];
+            let solution = operate(num1, operator, num2);
+            let begin = array.slice(0,(operatorIndex - 1));
+            let end = array.slice((operatorIndex + 2));
+            array = begin.concat(solution, end);
+            return array;
+        };
     };
 };
 
