@@ -47,13 +47,15 @@ function checkParens(array){
             let openIndex = array.findIndex((element) => element == "(");
             let closeIndex = array.lastIndexOf(")");
             let parensArray = array.slice(openIndex + 1, closeIndex);
+            
+            ////problem with functions below not properly returning array
             checkMult(parensArray);
             checkDiv(parensArray);
             checkAdd(parensArray);
             checkSub(parensArray);
-            console.log(parensArray);
-            return parensArray;
         };
+        console.log(parensArray);
+        return parensArray;
     };
 };
 function checkMult(array){
@@ -69,9 +71,10 @@ function checkMult(array){
             let begin = array.slice(0,(operatorIndex - 1));
             let end = array.slice((operatorIndex + 2));
             array = begin.concat(solution, end);
-            return(array);
         };
+        return array;
     };
+    return array;
 };
 function checkDiv(array){
     if (array.includes("/") == true){
@@ -86,9 +89,10 @@ function checkDiv(array){
             let begin = array.slice(0,(operatorIndex - 1));
             let end = array.slice((operatorIndex + 2));
             array = begin.concat(solution, end);
-            return array;
         };
+        return array;
     };
+    return array;  
 };
 function checkAdd(array){
     if (array.includes("+") == true){
@@ -103,9 +107,10 @@ function checkAdd(array){
             let begin = array.slice(0,(operatorIndex - 1));
             let end = array.slice((operatorIndex + 2));
             array = begin.concat(solution, end);
-            return array;
         };
+        return array;
     };
+    return array;
 };
 function checkSub(array){
     if (array.includes("-") == true){
@@ -120,18 +125,49 @@ function checkSub(array){
             let begin = array.slice(0,(operatorIndex - 1));
             let end = array.slice((operatorIndex + 2));
             array = begin.concat(solution, end);
-            return array;
         };
+        return array;
     };
+    return array;
+};
+function evalAddSub(array){
+    if (array.includes("-" || "+") == true){
+        let filterX = array.filter((element) => element == ("-" || "+"));
+        let runtimes = filterX.length;
+        for (i=0; i < runtimes; i++){
+            if ((array.findIndex((element) => element == "-")) < (array.findIndex((element) => element == "+"))){
+                let operatorIndex = array.findIndex((element) => element == "-");
+                let operator = "-";
+                let num1 = array[operatorIndex - 1];
+                let num2 = array[operatorIndex + 1];
+                let solution = operate(num1, operator, num2);
+                let begin = array.slice(0,(operatorIndex - 1));
+                let end = array.slice((operatorIndex + 2));
+                array = begin.concat(solution, end);
+                return array;
+            } else if ((array.findIndex((element) => element == "+")) < (array.findIndex((element) => element == "-"))){
+                let operatorIndex = array.findIndex((element) => element == "+");
+                let operator = "+";
+                let num1 = parseInt(array[operatorIndex - 1]);
+                let num2 = parseInt(array[operatorIndex + 1]);
+                let solution = operate(num1, operator, num2);
+                let begin = array.slice(0,(operatorIndex - 1));
+                let end = array.slice((operatorIndex + 2));
+                array = begin.concat(solution, end);
+                return array;
+            };
+        };
+        return array;
+    };
+    return array;
 };
 
 //event listeners that update both display and display value array
 let numbers = document.querySelectorAll(".numberButton");
 numbers.forEach(button => {
     button.addEventListener("click", () => {
-//ERROR -- only does single or double digits
         display.textContent += button.textContent;
-        if(Object.keys(numbers).some(element => displayArray.slice(-1).includes(element) == true)){
+        if(Object.keys(numbers).some(element => displayArray.slice(-1).toString().includes(element) == true)){
             let last = displayArray.slice(-1).toString() + button.textContent;
             displayArray.pop();
             displayArray.push(last);
@@ -149,10 +185,17 @@ clear.addEventListener("click", () => {
 });
 let backspace = document.querySelector("#back");
 backspace.addEventListener("click", () => {
-//ERROR -- when a number in the array is something like "66", all of "66" is deleted, not just "6"
-    display.textContent = display.textContent.slice(0,-1);
-    displayArray.pop();
-    console.log(displayArray);
+    if (displayArray[displayArray.length-1].length > 1){
+        newEnd = displayArray[displayArray.length-1].slice(0,-1);
+        displayArray.pop();
+        displayArray.push(newEnd);
+        display.textContent = display.textContent.slice(0,-1)
+        console.log(displayArray);
+    } else {
+        display.textContent = display.textContent.slice(0,-1);
+        displayArray.pop();
+        console.log(displayArray);
+    };
 });
 let operators = document.querySelectorAll(".operatorButton");
 operators.forEach(button => {
@@ -201,5 +244,6 @@ dot.addEventListener("click", () => {
 let equals = document.querySelector("#equals");
 equals.addEventListener("click", () => {
             ////need logic to call operate() function correctly
-    display.textContent = solution;
+    display.textContent = checkSub(checkAdd(checkDiv(checkMult(displayArray))));
+    displayArray = checkAdd(checkSub(checkDiv(checkMult(displayArray))));
 });
