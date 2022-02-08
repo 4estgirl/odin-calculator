@@ -7,10 +7,10 @@ function add (num1, num2){
     solution = num1 + num2;
     return solution;
 };
-function subtract (num1, num2){
-    solution = num1 - num2;
-    return solution;
-};
+// function subtract (num1, num2){
+//     solution = num1 - num2;
+//     return solution;
+// };
 function multiply (num1, num2){
     solution = num1 * num2;
     return solution;
@@ -101,8 +101,8 @@ function checkAdd(array){
         for (i=0; i < runtimes; i++){
             let operatorIndex = array.findIndex((element) => element == "+");
             let operator = "+";
-            let num1 = parseInt(array[operatorIndex - 1]);
-            let num2 = parseInt(array[operatorIndex + 1]);
+            let num1 = parseFloat(array[operatorIndex - 1]);
+            let num2 = parseFloat(array[operatorIndex + 1]);
             let solution = operate(num1, operator, num2);
             let begin = array.slice(0,(operatorIndex - 1));
             let end = array.slice((operatorIndex + 2));
@@ -112,53 +112,20 @@ function checkAdd(array){
     };
     return array;
 };
-function checkSub(array){
-    if (array.includes("-") == true){
-        let filterX = array.filter((element) => element == "-");
-        let runtimes = filterX.length;
-        for (i=0; i < runtimes; i++){
-            let operatorIndex = array.findIndex((element) => element == "-");
-            let operator = "-";
-            let num1 = array[operatorIndex - 1];
-            let num2 = array[operatorIndex + 1];
-            let solution = operate(num1, operator, num2);
-            let begin = array.slice(0,(operatorIndex - 1));
-            let end = array.slice((operatorIndex + 2));
-            array = begin.concat(solution, end);
-        };
-        return array;
+function addRemaining(array){
+    let runtimes = array.length - 1;
+    console.log("runtimes " + runtimes);
+    for (i=0; i < runtimes; i++){
+        let operator = "+";
+        let num1 = parseFloat(array[0]);
+        let num2 = parseFloat(array[1]);
+        let solution = operate(num1, operator, num2);
+        let end = array.slice(2);
+        array =[solution];
+        array = array.concat(end);
+        console.log("infor " + array);
     };
-    return array;
-};
-function evalAddSub(array){
-    if (array.includes("-" || "+") == true){
-        let filterX = array.filter((element) => element == ("-" || "+"));
-        let runtimes = filterX.length;
-        for (i=0; i < runtimes; i++){
-            if ((array.findIndex((element) => element == "-")) < (array.findIndex((element) => element == "+"))){
-                let operatorIndex = array.findIndex((element) => element == "-");
-                let operator = "-";
-                let num1 = array[operatorIndex - 1];
-                let num2 = array[operatorIndex + 1];
-                let solution = operate(num1, operator, num2);
-                let begin = array.slice(0,(operatorIndex - 1));
-                let end = array.slice((operatorIndex + 2));
-                array = begin.concat(solution, end);
-                return array;
-            } else if ((array.findIndex((element) => element == "+")) < (array.findIndex((element) => element == "-"))){
-                let operatorIndex = array.findIndex((element) => element == "+");
-                let operator = "+";
-                let num1 = parseInt(array[operatorIndex - 1]);
-                let num2 = parseInt(array[operatorIndex + 1]);
-                let solution = operate(num1, operator, num2);
-                let begin = array.slice(0,(operatorIndex - 1));
-                let end = array.slice((operatorIndex + 2));
-                array = begin.concat(solution, end);
-                return array;
-            };
-        };
-        return array;
-    };
+    console.log("afterfor " + array);
     return array;
 };
 
@@ -168,6 +135,10 @@ numbers.forEach(button => {
     button.addEventListener("click", () => {
         display.textContent += button.textContent;
         if(Object.keys(numbers).some(element => displayArray.slice(-1).toString().includes(element) == true)){
+            let last = displayArray.slice(-1).toString() + button.textContent;
+            displayArray.pop();
+            displayArray.push(last);
+        } else if (displayArray.slice(-1).includes("-") == true) {
             let last = displayArray.slice(-1).toString() + button.textContent;
             displayArray.pop();
             displayArray.push(last);
@@ -244,6 +215,8 @@ dot.addEventListener("click", () => {
 let equals = document.querySelector("#equals");
 equals.addEventListener("click", () => {
             ////need logic to call operate() function correctly
-    display.textContent = checkSub(checkAdd(checkDiv(checkMult(displayArray))));
-    displayArray = checkAdd(checkSub(checkDiv(checkMult(displayArray))));
+    let solutionArray = addRemaining(checkAdd(checkDiv(checkMult(displayArray))));
+    display.textContent = parseFloat(solutionArray[0].toFixed(10));
+    displayArray = addRemaining(checkAdd(checkDiv(checkMult(displayArray))));
+    console.log(displayArray);
 });
