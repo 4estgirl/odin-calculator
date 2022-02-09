@@ -44,6 +44,8 @@ function checkParens(array){
         let filterX = array.filter((element) => element == "(");
         let runtimes = filterX.length;
         for (i=0; i < runtimes; i++){
+            ////Next updates: find last "(" and first ")" -> operate expression between, replace (expression) with solution, run again.
+
             let openIndex = array.findIndex((element) => element == "(");
             let closeIndex = array.lastIndexOf(")");
             let parensArray = array.slice(openIndex + 1, closeIndex);
@@ -190,10 +192,23 @@ parens.addEventListener("click", () =>{
         console.log(displayArray);
     };
 });
+let dot = document.querySelector("#dot");
+dot.addEventListener("click", () => {
+    if ((displayArray.slice(-1).toString().includes("."))== true){
+        displayArray = displayArray;
+        display.textContent = display.textContent;
+    }else if((Object.keys(numbers).some(element => displayArray.slice(-1).toString().includes(element) == true))){
+        let last = displayArray.slice(-1).toString() + dot.textContent;
+        displayArray.pop();
+        displayArray.push(last);
+        display.textContent += dot.textContent;
+    };
+});
 
 //event listeners that update the display when buttons are clicked
 let percent = document.querySelector("#percent");
 percent.addEventListener("click", () => {
+    //////Next updates: if one number in array, move decimal on that number 2 to the left; if num1 +- num2% then num1 +- (num2 percent of num1); if num1 * num2% then (num1*num2)%; if num1 / num2% then (num1/num2) and move decimal 2 to the right   
     if(display.textContent.length == 0){
         display.textContent = display.textContent;
     } else if (display.textContent.length == 1){
@@ -204,12 +219,6 @@ percent.addEventListener("click", () => {
         let first = display.textContent.slice(0, -2);
         let last = display.textContent.slice(-2);
         display.textContent = first + "." + last;
-    };
-});
-let dot = document.querySelector("#dot");
-dot.addEventListener("click", () => {
-    if (!display.textContent.includes(".")){
-        display.textContent += dot.textContent;
     };
 });
 let equals = document.querySelector("#equals");
