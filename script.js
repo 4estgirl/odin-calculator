@@ -7,10 +7,10 @@ function add (num1, num2){
     solution = num1 + num2;
     return solution;
 };
-// function subtract (num1, num2){
-//     solution = num1 - num2;
-//     return solution;
-// };
+function subtract (num1, num2){
+    solution = num1 - num2;
+    return solution;
+};
 function multiply (num1, num2){
     solution = num1 * num2;
     return solution;
@@ -40,25 +40,16 @@ function operate (num1, operator, num2){
 
 //PMDAS (no exponent) functions
 function checkParens(array){
-    if (array.includes("(") == true){
-        let filterX = array.filter((element) => element == "(");
-        let runtimes = filterX.length;
-        for (i=0; i < runtimes; i++){
-            ////Next updates: find last "(" and first ")" -> operate expression between, replace (expression) with solution, run again.
-
-            let openIndex = array.findIndex((element) => element == "(");
-            let closeIndex = array.lastIndexOf(")");
-            let parensArray = array.slice(openIndex + 1, closeIndex);
-            
-            ////problem with functions below not properly returning array
-            checkMult(parensArray);
-            checkDiv(parensArray);
-            checkAdd(parensArray);
-            checkSub(parensArray);
+    array.forEach(item => {
+        if (item == "("){
+            let open = array.findIndex((element) => element == "(");
+            let close = array.findIndex((element) => element == ")");
+            let expression = array.slice(open + 1, close);
+            let answer = addRemaining(checkDiv(checkMult(expression)));
+            array = array.slice(0,open).concat(answer,(array.slice(close+1)));
         };
-        console.log(parensArray);
-        return parensArray;
-    };
+    });
+    return array;
 };
 function checkMult(array){
     if (array.includes("x") == true){
@@ -95,6 +86,24 @@ function checkDiv(array){
         return array;
     };
     return array;  
+};
+function checkSub(array){
+    if (array.includes("-") == true){
+        let filterX = array.filter((element) => element == "-");
+        let runtimes = filterX.length;
+        for (i=0; i < runtimes; i++){
+            let operatorIndex = array.findIndex((element) => element == "-");
+            let operator = "-";
+            let num1 = array[operatorIndex - 1];
+            let num2 = array[operatorIndex + 1];
+            let solution = operate(num1, operator, num2);
+            let begin = array.slice(0,(operatorIndex - 1));
+            let end = array.slice((operatorIndex + 2));
+            array = begin.concat(solution, end);
+        };
+        return array;
+    };
+    return array;
 };
 function checkAdd(array){
     if (array.includes("+") == true){
@@ -144,6 +153,10 @@ numbers.forEach(button => {
             let last = displayArray.slice(-1).toString() + button.textContent;
             displayArray.pop();
             displayArray.push(last);
+        } else if (displayArray.slice(-1).includes("+") == true) {
+            let last = displayArray.slice(-1).toString() + button.textContent;
+            displayArray.pop();
+            displayArray.push(last);
         } else {
             displayArray.push(button.textContent);
         }
@@ -182,13 +195,25 @@ let parens = document.querySelector("#parens");
 parens.addEventListener("click", () =>{
     let open = display.textContent.lastIndexOf("(");
     let close = display.textContent.lastIndexOf(")");
-    if (((open == -1) && (close = -1)) || (open < close)){
+    let openCount = displayArray.filter((element) => element == "(").length;
+    let closeCount = displayArray.filter((element) => element == ")").length;
+    if (displayArray[displayArray.length -1] == "("){
+        // display.textContent += "(";
+        // displayArray.push("(");
+        display.textContent = display.textContent;
+        displayArray = displayArray;
+        console.log(displayArray);
+    } else if (((open == -1) && (close = -1))){
         display.textContent += "(";
         displayArray.push("(");
         console.log(displayArray);
-    } else {
+    } else if (openCount > closeCount) {
         display.textContent += ")";
         displayArray.push(")");
+        console.log(displayArray);
+    } else {
+        display.textContent += "(";
+        displayArray.push("(");
         console.log(displayArray);
     };
 });
@@ -203,6 +228,14 @@ dot.addEventListener("click", () => {
         displayArray.push(last);
         display.textContent += dot.textContent;
     };
+});
+
+let equals = document.querySelector("#equals");
+equals.addEventListener("click", () => {
+    let solutionArray = addRemaining(checkDiv(checkMult(checkParens(displayArray))));
+    display.textContent = parseFloat(solutionArray[0].toFixed(10));
+    displayArray = addRemaining(checkDiv(checkMult(checkParens(displayArray))));
+    console.log(displayArray);
 });
 
 //event listeners that update the display when buttons are clicked
@@ -221,11 +254,4 @@ percent.addEventListener("click", () => {
         display.textContent = first + "." + last;
     };
 });
-let equals = document.querySelector("#equals");
-equals.addEventListener("click", () => {
-            ////need logic to call operate() function correctly
-    let solutionArray = addRemaining(checkAdd(checkDiv(checkMult(displayArray))));
-    display.textContent = parseFloat(solutionArray[0].toFixed(10));
-    displayArray = addRemaining(checkAdd(checkDiv(checkMult(displayArray))));
-    console.log(displayArray);
-});
+
